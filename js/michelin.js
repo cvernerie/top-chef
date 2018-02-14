@@ -9,7 +9,7 @@ module.exports = {
         var restaurants = [];
 
         for (i = 1; i<35; i++){
-            page = 'https://restaurant.michelin.fr/restaurants/france/restaurants-1-etoile-michelin/restaurants-2-etoiles-michelin/restaurants-3-etoiles-michelin'.concat('/page-',i);
+            page = url.concat('/page-',i);
             request(page, function (error, response, html) {
                 if (!error && response.statusCode == 200) {
                     var $ = cheerio.load(html);
