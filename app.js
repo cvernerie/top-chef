@@ -4,7 +4,7 @@ const michelin = require('./js/michelin')
 
 app.get('/', function (req, res) {
     michelin.getFrenchStarredRestaurants(function (restaurantsList) {
-        res.send("restaurantsList")
+        res.send(restaurantsList)
     });
 });
 
