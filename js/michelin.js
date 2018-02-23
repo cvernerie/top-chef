@@ -40,7 +40,6 @@ module.exports = {
                                 var str = '{' + '"name": ' + '"' + name.substr(7, name.length - 11) + '",' + ' "zipCode": "' + zipCode + '", ' + '"nbStars": ' + '"' + nbStars + '"},\n';
 
                                 fs.appendFile('../data/restaurants.json', str)
-
                             }
                             else {
                                 console.log("error lv2 : " + error.message + " on : " + j + " page : " + (i+1) + "nb on page : " + nbRestaurants + " => " + restaurantUrl)
