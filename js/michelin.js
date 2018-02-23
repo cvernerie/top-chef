@@ -1,42 +1,58 @@
-const request = require('request');
-const cheerio = require('cheerio');
+var request = require('request');
+var cheerio = require('cheerio');
+var fs = require('fs');
 
-const config = require('../config/michelin.json');
-const url = config.url;
+const config = require('../config/michelin.json')
+
 
 module.exports = {
-    getFrenchStarredRestaurants : function (callback) {
-        var restaurants = [];
 
-        for (i = 1; i<35; i++){
-            page = url.concat('/page-',i);
-            request(page, function (error, response, html) {
-                if (!error && response.statusCode == 200) {
+    getFrenchStarredRestaurants: function(callback) {
+        for (i = 0; i < 35; i++) {
+
+            var restanrantPaginatedUrl = config.url + '/page-' + (i + 1)
+
+            request(restanrantPaginatedUrl, function (error, response, html) {
+
+                if (!error && response.statusCode === 200) {
+
                     var $ = cheerio.load(html);
-                    restaurantsByPage = $('div[attr-gtm-type="poi"]');
-                    hrefByPage = $('a[class="poi-card-link"]');
-                    for (j = 0; j < restaurantsByPage.length; j++) {
-                        var href = hrefByPage[j].attribs['href'];
-                        var page2 = 'https://restaurant.michelin.fr'.concat(href);
-                        request(page2, function (error, response, html) {
-                            if (!error && response.statusCode == 200) {
+
+                    var nbRestaurants = $('div[attr-gtm-type="poi"]').length
+                    var restaurantsLinks = $('a[class="poi-card-link"]')
+
+                    for (j = 0; j < nbRestaurants; j++) {
+
+                        var restaurantUrl = 'https://restaurant.michelin.fr' + restaurantsLinks[j].attribs['href'];
+
+                        request(restaurantUrl, function (error, response, html) {
+
+                            if (!error && response.statusCode === 200) {
+
                                 var sel = cheerio.load(html);
 
-                                var title = sel('.poi_intro-display-title').text();
-                                var addr_Zip = sel('.addressfield-container-inline .postal-code').first().text();
+                                var name = sel('.poi_intro-display-title').text();
 
-                                restaurants.push({
-                                    "nom": title,
-                                    "zip": addr_Zip
-                                });
-                                console.log("{" + "'nom' : " + "'"+title+ "',"+ " 'zip' : '" +addr_Zip+ "'" + "},");
+                                var zipCode = sel('.addressfield-container-inline .postal-code').first().text();
+
+                                var nbStars = sel('.michelin-poi-distinctions-list .content-wrapper').text().charAt(0);
+
+                                var str = '{' + '"name": ' + '"' + name.substr(7, name.length - 11) + '",' + ' "zipCode": "' + zipCode + '", ' + '"nbStars": ' + '"' + nbStars + '"},\n';
+
+                                fs.appendFile('../data/restaurants.json', str)
+
+                            }
+                            else {
+                                console.log("error lv2 : " + error.message + " on : " + j + " page : " + (i+1) + "nb on page : " + nbRestaurants + " => " + restaurantUrl)
                             }
                         });
                     }
+                } else {
+                    console.log("error lv1 : " + error.message + " on : " + config.url.concat('/page-', (i+1)))
                 }
 
             });
         }
-        callback(restaurants);
+        callback("listRest");
     }
-};
+}
