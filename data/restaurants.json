@@ -1,4 +1,4 @@
-{"name": "Ed.Em", "zipCode": "21190", "nbStars": "1"},
+[{"name": "Ed.Em", "zipCode": "21190", "nbStars": "1"},
 {"name": "Alcyone", "zipCode": "13002", "nbStars": "1"},
 {"name": "Sylvestre", "zipCode": "75007", "nbStars": "2"},
 {"name": "Flocons de Sel", "zipCode": "74120", "nbStars": "3"},
@@ -223,7 +223,7 @@
 {"name": "Le Brittany", "zipCode": "29681", "nbStars": "1"},
 {"name": "Roscanvec", "zipCode": "56000", "nbStars": "1"},
 {"name": "Le Cercle", "zipCode": "18000", "nbStars": "1"},
-{"name": "Transparence "La Table de Patrick Fréchin"", "zipCode": "54000", "nbStars": "1"},
+{"name": "Transparence \"La Table de Patrick Fréchin\"", "zipCode": "54000", "nbStars": "1"},
 {"name": "Le Puits du Trésor", "zipCode": "11600", "nbStars": "1"},
 {"name": "Le Chiquito", "zipCode": "95540", "nbStars": "1"},
 {"name": "Auberge de la Brie", "zipCode": "77860", "nbStars": "1"},
@@ -608,4 +608,4 @@
 {"name": "Aux Terrasses", "zipCode": "71700", "nbStars": "1"},
 {"name": "Jérôme Feck", "zipCode": "51000", "nbStars": "1"},
 {"name": "La Fourchette du Printemps", "zipCode": "75017", "nbStars": "1"},
-{"name": "Le Petit Hôtel du Grand Large", "zipCode": "56510", "nbStars": "1"},
+{"name": "Le Petit Hôtel du Grand Large", "zipCode": "56510", "nbStars": "1"}]
