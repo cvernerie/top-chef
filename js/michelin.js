@@ -10,9 +10,9 @@ module.exports = {
     getFrenchStarredRestaurants: function(callback) {
         for (i = 0; i < 35; i++) {
 
-            var restanrantPaginatedUrl = config.url + '/page-' + (i + 1)
+            var restaurantPaginatedUrl = config.url + '/page-' + (i + 1)
 
-            request(restanrantPaginatedUrl, function (error, response, html) {
+            request(restaurantPaginatedUrl, function (error, response, html) {
 
                 if (!error && response.statusCode === 200) {
 
