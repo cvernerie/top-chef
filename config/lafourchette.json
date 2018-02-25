@@ -1,5 +1,6 @@
 {
   "url": "https://www.lafourchette.com/search-refine/",
-  "apiHost": "https://m.lafourchette.com",
-  "searchUrl": "/api/restaurant-prediction?name="
+  "apiHost": "https://m.lafourchette.com/api",
+  "searchUrl": "/restaurant-prediction?name=",
+  "dealUrl": "/restaurant/%s/sale-type"
 }
