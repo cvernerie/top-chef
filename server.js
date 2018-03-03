@@ -20,7 +20,11 @@ app.get('/lafourchette-deals', function (req, res) {
         }
     }, function (error, response) {
         var resultSet = response.hits.hits
-        res.send(resultSet)
+        var restaurants = []
+        for (var i = 0; i < resultSet.length; i++) {
+            restaurants.push(resultSet[i]._source.lafourchetteRestaurant)
+        }
+        res.send(restaurants)
     })
 })
 
