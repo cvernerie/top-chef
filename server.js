@@ -8,6 +8,12 @@ var client = new elasticsearch.Client({
     log: 'trace'
 });
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.get('/lafourchette-deals', function (req, res) {
     client.search({
         index: 'top_chef_lafourchette_restaurants',
