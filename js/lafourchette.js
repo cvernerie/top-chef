@@ -1,29 +1,51 @@
 const request = require('request');
-const cheerio = require('cheerio');
-var fs = require('fs');
-
 const config = require('../config/lafourchette.json');
 
-const michelinRestaurants = require('../data/restaurants')
-const lafourchetteRestaurants = require('../data/lafourchetteRestaurantsIds')
+var elasticsearch = require('elasticsearch');
+var client = new elasticsearch.Client({
+    host: 'localhost:9200',
+    log: 'trace'
+});
+
+const michelinRestaurants = require('../data/michelinRestaurants')
 
 module.exports = {
 
     findRestaurants : function (callback) {
-
-        for(i = 0; i < michelinRestaurants.length; i++) {
-            getLaFourchetteRestaurant(michelinRestaurants[i])
+        for (var i = 0; i < michelinRestaurants.length; i++) {
+            getLaFourchetteRestaurant(michelinRestaurants[i], i)
         }
     },
-
-    findDeals: function (callback) {
-        for(i = 0; i < lafourchetteRestaurants.length; i++) {
-            getLafourchetteDeals(lafourchetteRestaurants[i])
-        }
-    }
 };
 
-function getLafourchetteDeals(lafourchetteRestaurant) {
+function getLaFourchetteRestaurant(michelinRestaurant, i) {
+
+    var id = i
+
+    var searchUrl = encodeURI(config.apiHost + config.searchUrl + michelinRestaurant.name);
+
+    request(searchUrl, function (error, response, html) {
+
+        if (!error && response.statusCode === 200) {
+
+            var jsonResults = JSON.parse(response.body);
+
+            for (j = 0; j < jsonResults.length; j++) {
+
+                if (jsonResults[j].address.postal_code === michelinRestaurant.zipCode) {
+                    getLafourchetteDeals(jsonResults[j], i)
+                }
+            }
+        } else {
+            if (error) {
+                throw error
+            }
+        }
+    })
+}
+
+function getLafourchetteDeals(lafourchetteRestaurant, i) {
+    var id = i
     var searchUrl = encodeURI(config.apiHost + config.dealUrl.replace("%s", lafourchetteRestaurant.id))
 
     request(searchUrl, function (error, response, html) {
@@ -40,38 +62,22 @@ function getLafourchetteDeals(lafourchetteRestaurant) {
                 }
             }
 
-            fs.appendFile('./lafourchetteDeals.json',
-                '{ "restaurantId": '
-                + lafourchetteRestaurant.id
-                + ', "deals": '
-                + JSON.stringify(deals)
-                + '},\n')
+            lafourchetteRestaurant.deals = deals;
 
-        } else {
-            console.log("error : " + searchUrl)
-        }
-    })
-}
-
-function getLaFourchetteRestaurant(michelinRestaurant) {
-
-    var searchUrl = encodeURI(config.apiHost + config.searchUrl + michelinRestaurant.name);
-
-    request(searchUrl, function (error, response, html) {
-
-        if (!error && response.statusCode === 200) {
-
-            var jsonResults = JSON.parse(response.body);
-
-            for (j = 0; j < jsonResults.length; j++) {
-
-                if (jsonResults[j].address.postal_code === michelinRestaurant.zipCode) {
-
-                    fs.appendFile('./lafourchetteRestaurantsIds.json', JSON.stringify(jsonResults[j]) + ',\n')
+            client.create({
+                index: 'top_chef_lafourchette_restaurants',
+                type: 'restaurant',
+                id: id,
+                body: {
+                    lafourchetteRestaurant
                 }
-            }
+            }, function (error, response) {
+            })
+
         } else {
-            console.log("error : " + searchUrl)
+            if (error) {
+                throw error
+            }
         }
     })
 }

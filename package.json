@@ -1,13 +1,16 @@
 {
-  "name": "web-scrape",
+  "name": "top-chef",
   "version": "0.0.1",
-  "description": "Scrape le web.",
-  "main": "server.js",
-  "author": "Scotch",
+  "description": "Provides the current deals from Lafourchette for Michelin French starred restaurants.",
+  "main": "app.js",
+  "author": "cvernerie",
   "dependencies": {
     "bootstrap": "latest",
     "cheerio": "^1.0.0-rc.2",
+    "elasticsearch": "^14.1.0",
     "express": "latest",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   },

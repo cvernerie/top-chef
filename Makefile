@@ -15,3 +15,4 @@ create-michelin-index:
 
 create-lafourchette-index:
 	curl -XPUT 'localhost:9200/top_chef_lafourchette_restaurants?pretty' -H 'Content-Type: application/json'
+
