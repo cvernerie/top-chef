@@ -1,4 +1,12 @@
-# TOP CHEF
+## Install
+
+- git clone `git@github.com:cvernerie/top-chef.git`
+- You must have a running instance of elasticsearch on port 9200.
+- In **first tab**, run `npm run server`
+- In **second tab**, run `npm start`
+
+
+# TOP CHEF 
 
 > Eat well and cheaper than usually
 
